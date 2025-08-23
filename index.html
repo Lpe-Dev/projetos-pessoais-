@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha de Personagem Draemora RPG</title>
+<style>
+:root {
+    --primary: #4a1e6a;
+    --primary-dark: #2d0f42;
+    --primary-light: #6b2d9a;
+    --secondary: #d4af37;
+    --secondary-dark: #b8941f;
+    --accent: #8a2be2;
+    --text-light: #f8f9fa;
+    --text-dark: #212529;
+    --bg-light: #ffffff;
+    --bg-dark: #1a1a2e;
+    --card-light: #f8f9fa;
+    --card-dark: #2d2d4d;
+    --border-light: #dee2e6;
+    --border-dark: #495057;
+    --success: #28a745;
+    --warning: #ffc107;
+    --danger: #dc3545;
+    --shadow: 0 4px 6px rgba(0,0,0,0.1);
+    --shadow-hover: 0 8px 15px rgba(0,0,0,0.2);
+    --transition: all 0.3s ease;
+}
+
+* {margin:0; padding:0; box-sizing:border-box;}
+body {font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: var(--bg-light); color: var(--text-dark); line-height: 1.6; transition: var(--transition); min-height: 100vh; padding:0;}
+body.dark-mode {background: var(--bg-dark); color: var(--text-light);}
+
+.container {max-width:1200px; margin:0 auto; padding:20px;}
+
+header {background:var(--primary); color:var(--text-light); padding:1rem 0; box-shadow:var(--shadow); position:sticky; top:0; z-index:1000;}
+.header-content {max-width:1200px; margin:0 auto; padding:0 20px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;}
+.logo {font-size:1.8rem; font-weight:bold; color: var(--secondary);}
+.header-controls {display:flex; gap:0.5rem; flex-wrap:wrap;}
+button {background: var(--primary-light); color: var(--text-light); border:none; padding:0.5rem 1rem; border-radius:5px; cursor:pointer; font-weight:600; transition: var(--transition);}
+button:hover {background: var(--primary-dark);}
+
+.section {background: var(--card-light); border-radius:8px; padding:1.5rem; margin-bottom:1.5rem; box-shadow: var(--shadow); border:1px solid var(--border-light);}
+body.dark-mode .section {background: var(--card-dark); border-color: var(--border-dark);}
+.section-header {display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; padding-bottom:0.5rem; border-bottom:2px solid var(--primary);}
+.section-title {font-size:1.3rem; font-weight:700; color: var(--primary);}
+body.dark-mode .section-title {color: var(--secondary);}
+
+.form-group {margin-bottom:1rem;}
+label {display:block; margin-bottom:0.5rem; font-weight:600; color: var(--primary);}
+body.dark-mode label {color: var(--secondary);}
+input[type="text"], input[type="number"], textarea, select {width:100%; padding:0.5rem; border:2px solid var(--border-light); border-radius:5px; font-size:1rem; background: var(--bg-light); color: var(--text-dark);}
+body.dark-mode input[type="text"], body.dark-mode input[type="number"], body.dark-mode textarea, body.dark-mode select {background: var(--card-dark); border-color: var(--border-dark); color: var(--text-light);}
+
+.grid {display:grid; gap:1rem; margin-bottom:1rem;}
+.grid-2 {grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));}
+.grid-3 {grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));}
+.grid-4 {grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));}
+
+.pericia-group {background: #f8f9fa; padding:1rem; border-radius:5px; margin-bottom:1rem; border:1px solid var(--border-light);}
+body.dark-mode .pericia-group {background:#2d2d4d; border-color: var(--border-dark);}
+.pericia-group-title {font-size:1.1rem; font-weight:700; color: var(--primary); margin-bottom:0.5rem; padding-bottom:0.25rem; border-bottom:1px solid var(--primary-light);}
+body.dark-mode .pericia-group-title {color: var(--secondary); border-color: var(--secondary);}
+.pericia-item {display:flex; justify-content:space-between; align-items:center; padding:0.5rem; margin-bottom:0.5rem; background:white; border-radius:5px; border:1px solid var(--border-light);}
+body.dark-mode .pericia-item {background:#1a1a2e; border-color: var(--border-dark);}
+.pericia-info {flex:1;}
+.pericia-name {font-weight:600; color: var(--primary-dark);}
+body.dark-mode .pericia-name {color: var(--secondary);}
+.pericia-attribute {font-size:0.85rem; color:#666; font-style:italic;}
+body.dark-mode .pericia-attribute {color:#ccc;}
+.pericia-controls {display:flex; gap:0.75rem; align-items:center;}
+.pericia-value {width:50px; text-align:center; padding:0.25rem; border:1px solid var(--border-light); border-radius:3px;}
+.pericia-treinada {display:flex; align-items:center; gap:0.25rem; white-space:nowrap;}
+
+.status-indicator {padding:0.5rem 1rem; border-radius:20px; font-weight:600; margin:0.25rem; cursor:pointer; transition: var(--transition); border:2px solid transparent;}
+.status-indicator:hover {transform:scale(1.05);}
+.status-inteira {background: var(--success); color:white;}
+.status-partida {background: var(--warning); color:black;}
+.status-quebrada {background: var(--danger); color:white;}
+.status-selected {border-color: var(--primary-dark); box-shadow:0 0 0 2px var(--primary-light);}
+
+.pericias-counter {background: rgba(74,30,106,0.1); padding:0.5rem 1rem; border-radius:20px; border:2px solid var(--primary-light); font-weight:600; color: var(--primary); margin-left:auto;}
+body.dark-mode .pericias-counter {background: rgba(212,175,55,0.1); border-color: var(--secondary); color: var(--secondary);}
+
+@media(max-width:768px){
+    .header-content {flex-direction:column; text-align:center;}
+    .grid-2, .grid-3, .grid-4 {grid-template-columns:1fr;}
+    .section {padding:1rem;}
+    .pericia-item {flex-direction:column; align-items:flex-start; gap:0.5rem;}
+    .pericia-controls {width:100%; justify-content:space-between;}
+}
+</style>
+</head>
+<body>
+<header>
+<div class="header-content">
+<div class="logo">Ficha Draemora RPG</div>
+<div class="header-controls">
+<button id="newBtn">Novo</button>
+<button id="saveBtn">Salvar</button>
+<button id="exportBtn">Exportar</button>
+<button id="importBtn">Importar</button>
+<button id="printBtn">Imprimir</button>
+<button id="themeToggle">Tema</button>
+</div>
+</div>
+</header>
+<div class="container">
+
+<!-- Identificação -->
+<div class="section">
+<div class="section-header">
+<h2 class="section-title">Identificação</h2>
+</div>
+<div class="grid grid-2">
+<div class="form-group"><label for="nome">Nome</label><input type="text" id="nome"></div>
+<div class="form-group"><label for="classe">Classe</label><input type="text" id="classe"></div>
+<div class="form-group"><label for="raca">Raça</label><input type="text" id="raca"></div>
+<div class="form-group"><label for="devocao">Devoção</label><input type="text" id="devocao"></div>
+<div class="form-group"><label for="apelido">Apelido (Opcional)</label><input type="text" id="apelido"></div>
+</div>
+</div>
+
+<!-- Atributos -->
+<div class="section">
+<div class="section-header"><h2 class="section-title">Atributos</h2></div>
+<div class="grid grid-3">
+<div class="form-group"><label for="cor">COR</label><input type="number" id="cor" min="0" value="0"></div>
+<div class="form-group"><label for="for">FOR</label><input type="number" id="for" min="0" value="0"></div>
+<div class="form-group"><label for="des">DES</label><input type="number" id="des" min="0" value="0"></div>
+<div class="form-group"><label for="men">MEN</label><input type="number" id="men" min="0" value="0"></div>
+<div class="form-group"><label for="alm">ALM</label><input type="number" id="alm" min="0" value="0"></div>
+<div class="form-group"><label for="car">CAR</label><input type="number" id="car" min="0" value="0"></div>
+</div>
+</div>
+
+<!-- Status -->
+<div class="section">
+<div class="section-header"><h2 class="section-title">Status</h2></div>
+<div class="grid grid-4">
+<div class="form-group"><label for="vida">VIDA</label><input type="number" id="vida" min="0" value="0"></div>
+<div class="form-group"><label for="def">DEF</label><input type="number" id="def" min="0" value="0"></div>
+<div class="form-group"><label for="rm">R.M</label><input type="number" id="rm" min="0" value="0"></div>
+<div class="form-group"><label for="rf">R.F</label><input type="number" id="rf" min="0" value="0"></div>
+</div>
+<div class="form-group"><label for="statusBase">Status Base</label><textarea id="statusBase" rows="3"></textarea></div>
+</div>
+
+<!-- Perícias -->
+<div class="section">
+<div class="section-header">
+<h2 class="section-title">Perícias</h2>
+<div class="pericias-counter">Treinadas: <span id="contadorTreinadas">0</span>/<span id="maxTreinadas">0</span></div>
+</div>
+
+<div id="periciasContainer"></div>
+</div>
+
+<!-- Proteções -->
+<div class="section">
+<div class="section-header"><h2 class="section-title">Proteções</h2></div>
+<div class="grid grid-2">
+<div class="form-group"><label>Armadura</label>
+<div>
+<span class="status-indicator status-inteira" onclick="selecionarEstado('armadura','inteira', this)">Inteira</span>
+<span class="status-indicator status-partida" onclick="selecionarEstado('armadura','partida', this)">Partida</span>
+<span class="status-indicator status-quebrada" onclick="selecionarEstado('armadura','quebrada', this)">Quebrada</span>
+</div></div>
+<div class="form-group"><label>Escudo</label>
+<div>
+<span class="status-indicator status-inteira" onclick="selecionarEstado('escudo','inteiro', this)">Inteiro</span>
+<span class="status-indicator status-partida" onclick="selecionarEstado('escudo','partido', this)">Partido</span>
+<span class="status-indicator status-quebrada" onclick="selecionarEstado('escudo','quebrado', this)">Quebrado</span>
+</div></div>
+</div>
+</div>
+</div>
+
+<script>
+// Dados iniciais
+let fichaData = {
+    identificacao: { nome:'', classe:'', raca:'', devocao:'', apelido:'' },
+    atributos: { cor:0, for:0, des:0, men:0, alm:0, car:0 },
+    status: { vida:0, def:0, rm:0, rf:0, statusBase:'' },
+    protecoes: { armadura:'inteira', escudo:'inteiro' },
+    pericias: []
+};
+
+// Definição das perícias
+const periciasLista = [
+{ grupo:'💪 COR - Corpo', pericias:[{nome:'Atletismo', attr:'[COR] - Corridas, escaladas, saltos e natação'}, {nome:'Resistência Física', attr:'[COR] - Suportar fadiga, doenças e efeitos físicos extremos'}]},
+{ grupo:'💥 FOR - Força', pericias:[{nome:'Combate', attr:'[FOR] - Golpes corpo a corpo e técnicas de luta'}, {nome:'Arremesso', attr:'[FOR] - Jogar objetos ou armas com força e precisão'}, {nome:'Arrombamento', attr:'[FOR] - Forçar portas, trancas ou baús com força bruta'}]},
+{ grupo:'⚡ DES - Destreza', pericias:[{nome:'Pontaria', attr:'[DES] - Usar armas de longo alcance com precisão'}, {nome:'Reflexos', attr:'[DES] - Reagir rapidamente a perigos e ataques'}, {nome:'Montaria', attr:'[DES] - Controlar montarias ou veículos'}, {nome:'Furtividade', attr:'[DES] - Mover-se sem ser visto ou ouvido'}]},
+{ grupo:'🧠 MEN - Mente', pericias:[{nome:'Percepção', attr:'[MEN] - Notar detalhes, armadilhas e perigos ocultos'}, {nome:'Ocultismo', attr:'[MEN] - Conhecimento sobre o sobrenatural, rituais e maldições'}, {nome:'Conjuração Mágica', attr:'[MEN] - Lançar magias de forma direta'}, {nome:'Conhecimentos Gerais', attr:'[MEN] - Saber sobre história, política e cultura'}, {nome:'Profissão', attr:'[MEN] - Utilizar habilidades ligadas ao ofício do personagem'}, {nome:'Ciências', attr:'[MEN] - Analisar fenômenos naturais e usar lógica científica'}, {nome:'Medicina', attr:'[MEN] - Curar ferimentos ou diagnosticar doenças'}]},
+{ grupo:'❤️ ALM - Alma', pericias:[{nome:'Intuição', attr:'[ALM] - Perceber emoções e intenções alheias'}, {nome:'Empatia', attr:'[ALM] - Sentir e compreender sentimentos'}, {nome:'Fé', attr:'[ALM] - Usar devoção para efeitos espirituais'}, {nome:'Resistência Mental', attr:'[ALM] - Resistir a efeitos psíquicos ou mágicos'}]},
+{ grupo:'✨ CAR - Carisma', pericias:[{nome:'Liderança', attr:'[CAR] - Inspirar aliados e comandar grupos'}, {nome:'Persuasão', attr:'[CAR] - Convencer ou manipular pessoas'}, {nome:'Enganação', attr:'[CAR] - Mentir ou disfarçar intenções'}, {nome:'Atuação', attr:'[CAR] - Encenar, atuar ou entreter'}]}
+];
+
+// Funções para criar perícias
+function criarPericias(){
+    const container = document.getElementById('periciasContainer');
+    container.innerHTML = '';
+    let totalTreinadas = 0;
+    let maxTreinadas = 0;
+
+    periciasLista.forEach(grp=>{
+        const divGroup = document.createElement('div');
+        divGroup.className='pericia-group';
+        divGroup.innerHTML=`<div class="pericia-group-title">${grp.grupo}</div>`;
+        grp.pericias.forEach(per=>{
+            maxTreinadas++;
+            const divItem=document.createElement('div');
+            divItem.className='pericia-item';
+            divItem.innerHTML=`
+            <div class="pericia-info">
+                <div class="pericia-name">${per.nome}</div>
+                <div class="pericia-attribute">${per.attr}</div>
+            </div>
+            <div class="pericia-controls">
+                <input type="number" class="pericia-value" value="0" min="0">
+                <label class="pericia-treinada"><input type="checkbox"> Treinada</label>
+            </div>
+            `;
+            divGroup.appendChild(divItem);
+        });
+        container.appendChild(divGroup);
+    });
+
+    document.getElementById('maxTreinadas').innerText = maxTreinadas;
+    atualizarContador();
+}
+
+// Contador de perícias treinadas
+function atualizarContador(){
+    const checkboxes = document.querySelectorAll('.pericia-treinada input');
+    let count = 0;
+    checkboxes.forEach(cb=>{if(cb.checked) count++;});
+    document.getElementById('contadorTreinadas').innerText = count;
+}
+
+// Status proteção
+function selecionarEstado(tipo, estado, el){
+    const all = el.parentElement.querySelectorAll('.status-indicator');
+    all.forEach(e=>e.classList.remove('status-selected'));
+    el.classList.add('status-selected');
+    fichaData.protecoes[tipo]=estado;
+}
+
+// Eventos
+document.getElementById('themeToggle').addEventListener('click', ()=>{
+    document.body.classList.toggle('dark-mode');
+});
+
+document.getElementById('newBtn').addEventListener('click', ()=>{
+    if(confirm('Deseja criar uma nova ficha? Os dados atuais serão perdidos.')){
+        localStorage.removeItem('fichaDraemora');
+        location.reload();
+    }
+});
+
+document.getElementById('saveBtn').addEventListener('click', salvarFicha);
+document.getElementById('exportBtn').addEventListener('click', exportarFicha);
+document.getElementById('importBtn').addEventListener('click', ()=>document.getElementById('fileInput').click());
+document.getElementById('printBtn').addEventListener('click', ()=>window.print());
+
+// Atualizar contador ao clicar em qualquer checkbox
+document.addEventListener('change', e=>{if(e.target.matches('.pericia-treinada input')) atualizarContador();});
+
+// Drag & Drop
+document.body.addEventListener('dragover', e=>e.preventDefault());
+document.body.addEventListener('drop', e=>{
+    e.preventDefault();
+    const file = e.dataTransfer.files[0];
+    if(file){const reader = new FileReader();
+    reader.onload = ev => importarJSON(ev.target.result);
+    reader.readAsText(file);}
+});
+
+// Funções salvar/export/import
+function salvarFicha(){
+    coletarDados();
+    localStorage.setItem('fichaDraemora', JSON.stringify(fichaData));
+    alert('Ficha salva localmente!');
+}
+
+function exportarFicha(){
+    coletarDados();
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(fichaData));
+    const dlAnchor = document.createElement('a');
+    dlAnchor.setAttribute("href", dataStr);
+    dlAnchor.setAttribute("download", "FichaDraemora.json");
+    dlAnchor.click();
+}
+
+function importarJSON(jsonStr){
+    try{
+        fichaData = JSON.parse(jsonStr);
+        preencherCampos();
+        alert('Ficha importada com sucesso!');
+    }catch(e){alert('Erro ao importar!')}
+}
+
+function coletarDados(){
+    fichaData.identificacao.nome = document.getElementById('nome').value;
+    fichaData.identificacao.classe = document.getElementById('classe').value;
+    fichaData.identificacao.raca = document.getElementById('raca').value;
+    fichaData.identificacao.devocao = document.getElementById('devocao').value;
+    fichaData.identificacao.apelido = document.getElementById('apelido').value;
+
+    fichaData.atributos.cor = parseInt(document.getElementById('cor').value);
+    fichaData.atributos.for = parseInt(document.getElementById('for').value);
+    fichaData.atributos.des = parseInt(document.getElementById('des').value);
+    fichaData.atributos.men = parseInt(document.getElementById('men').value);
+    fichaData.atributos.alm = parseInt(document.getElementById('alm').value);
+    fichaData.atributos.car = parseInt(document.getElementById('car').value);
+
+    fichaData.status.vida = parseInt(document.getElementById('vida').value);
+    fichaData.status.def = parseInt(document.getElementById('def').value);
+    fichaData.status.rm = parseInt(document.getElementById('rm').value);
+    fichaData.status.rf = parseInt(document.getElementById('rf').value);
+    fichaData.status.statusBase = document.getElementById('statusBase').value;
+
+    // Perícias
+    const periciasItens = document.querySelectorAll('.pericia-item');
+    fichaData.pericias = [];
+    periciasItens.forEach(item=>{
+        const nome = item.querySelector('.pericia-name').innerText;
+        const valor = parseInt(item.querySelector('.pericia-value').value);
+        const treinada = item.querySelector('.pericia-treinada input').checked;
+        fichaData.pericias.push({nome, valor, treinada});
+    });
+}
+
+function preencherCampos(){
+    document.getElementById('nome').value = fichaData.identificacao.nome;
+    document.getElementById('classe').value = fichaData.identificacao.classe;
+    document.getElementById('raca').value = fichaData.identificacao.raca;
+    document.getElementById('devocao').value = fichaData.identificacao.devocao;
+    document.getElementById('apelido').value = fichaData.identificacao.apelido;
+
+    document.getElementById('cor').value = fichaData.atributos.cor;
+    document.getElementById('for').value = fichaData.atributos.for;
+    document.getElementById('des').value = fichaData.atributos.des;
+    document.getElementById('men').value = fichaData.atributos.men;
+    document.getElementById('alm').value = fichaData.atributos.alm;
+    document.getElementById('car').value = fichaData.atributos.car;
+
+    document.getElementById('vida').value = fichaData.status.vida;
+    document.getElementById('def').value = fichaData.status.def;
+    document.getElementById('rm').value = fichaData.status.rm;
+    document.getElementById('rf').value = fichaData.status.rf;
+    document.getElementById('statusBase').value = fichaData.status.statusBase;
+
+    // Perícias
+    criarPericias();
+    fichaData.pericias.forEach((p,i)=>{
+        const item = document.querySelectorAll('.pericia-item')[i];
+        item.querySelector('.pericia-value').value = p.valor;
+        item.querySelector('.pericia-treinada input').checked = p.treinada;
+    });
+
+    // Proteções
+    ['armadura','escudo'].forEach(tipo=>{
+        const estado = fichaData.protecoes[tipo];
+        const all = document.querySelectorAll(`.status-indicator`);
+        all.forEach(e=>{if(e.innerText.toLowerCase()===estado) e.classList.add('status-selected');});
+    });
+
+    atualizarContador();
+}
+
+// Auto carregar ficha
+if(localStorage.getItem('fichaDraemora')){
+    fichaData = JSON.parse(localStorage.getItem('fichaDraemora'));
+    preencherCampos();
+}else{
+    criarPericias();
+}
+
+</script>
+
+<input type="file" id="fileInput" style="display:none" onchange="importarJSON(this.files[0]?this.files[0].text().then(txt=>importarJSON(txt)):null)">
+</body>
+</html>
